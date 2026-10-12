@@ -1,0 +1,47 @@
+/* =========================================================
+   App shell
+   Page-level layout only. Colors, type and components live in
+   theme/css/community-center.css. This file loads last, so it also
+   cancels the Vite starter styles that index.css applies to #root.
+   ========================================================= */
+
+/* Full-width flex column so the footer sits at the bottom on short pages */
+#root {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-height: 100svh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: left;
+}
+
+/* Optional <main className="app-main" id="main"> wrapper around <Routes /> */
+.app-main {
+  flex: 1 0 auto;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+/* Skip link for keyboard users: <a className="skip-link" href="#main"> */
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: 1rem;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--cc-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  color: #fff;
+}

@@ -1,0 +1,868 @@
+/* =========================================================
+   Appalachian Community Center — Theme
+   Requires Bootstrap 5.3. Load order:
+     bootstrap.css → index.css → community-center.css → App.css
+
+   Contents
+     1. Design tokens + Bootstrap variable overrides
+     2. Base (type, links, focus, media)
+     3. Layout (sections, headings, containers)
+     4. Buttons
+     5. Navbar
+     6. Hero + intro
+     7. Content components
+        facts · media-split · pull-quote · gallery · pillars · tiles
+     8. Call to action
+     9. Forms
+    10. Hours + address
+    11. Footer
+    12. Breadcrumb
+    13. Events list
+    14. Reduced motion
+   ========================================================= */
+
+
+/* 1. Design tokens
+   --------------------------------------------------------- */
+
+:root {
+  /* Palette: red scheme. Change the colors here and the whole site follows. */
+  --cc-primary: #9E2A2B;
+  --cc-primary-dark: #7B1E20;
+  --cc-accent: #C0392B;
+  --cc-deep: #5C1A1B;
+  --cc-cream: #F4EFE6;
+  --cc-blush: #F3DCD7;
+  --cc-brown: #6B4F3A;
+  --cc-amber: #B7791F;          /* warm gold for icons and highlights */
+  --cc-white: #FFFFFF;
+  --cc-text: #2B2220;
+  --cc-text-muted: #6A5A55;
+  --cc-line: #E3D2CA;           /* dividers on cream */
+  --cc-field-border: #9A7B72;   /* form field borders (3:1 on white) */
+
+  /* Type */
+  --cc-font: "Nunito Variable", "Nunito", system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* Shape + spacing */
+  --cc-radius-sm: 0.5rem;
+  --cc-radius: 0.75rem;
+  --cc-radius-lg: 1.25rem;
+  --cc-shadow: 0 10px 30px rgba(43, 34, 32, 0.12);
+  --cc-section-y: clamp(3rem, 2rem + 4vw, 6rem);
+  --cc-gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+
+  /* Bootstrap overrides: one place instead of fighting each component */
+  --bs-body-font-family: var(--cc-font);
+  --bs-body-line-height: 1.7;
+  --bs-body-color: var(--cc-text);
+  --bs-body-color-rgb: 43, 34, 32;
+  --bs-body-bg: var(--cc-cream);
+  --bs-body-bg-rgb: 244, 239, 230;
+  --bs-primary: var(--cc-primary);
+  --bs-primary-rgb: 158, 42, 43;
+  --bs-link-color: var(--cc-primary);
+  --bs-link-color-rgb: 158, 42, 43;
+  --bs-link-hover-color: var(--cc-primary-dark);
+  --bs-link-hover-color-rgb: 123, 30, 32;
+  --bs-border-color: var(--cc-line);
+  --bs-border-radius: var(--cc-radius-sm);
+  --bs-border-radius-lg: var(--cc-radius);
+
+  color-scheme: light; /* ignore OS dark mode; the palette is light-only */
+}
+
+
+/* 2. Base
+   --------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* clears the sticky navbar for #anchors */
+}
+
+body {
+  font-family: var(--cc-font);
+  background-color: var(--cc-cream);
+  color: var(--cc-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--cc-font);
+  color: var(--cc-primary);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2.25rem, 1.6rem + 2.8vw, 3.75rem); }
+h2 { font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem); }
+h3 { font-size: 1.375rem; font-weight: 700; }
+h4 { font-size: 1.125rem; font-weight: 700; }
+h5, h6 { font-size: 1rem; font-weight: 700; }
+
+p {
+  margin: 0 0 1.1em;
+  text-wrap: pretty;
+}
+
+.lead {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+a {
+  text-underline-offset: 0.2em;
+  transition: color 0.15s ease;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid var(--cc-accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--cc-blush);
+  color: var(--cc-text);
+}
+
+
+/* 3. Layout
+   --------------------------------------------------------- */
+
+/* Sections use padding (not margin) so tinted backgrounds run edge to edge */
+.page-section {
+  padding-block: var(--cc-section-y);
+}
+
+.page-section--tint  { background-color: var(--cc-blush); }
+.page-section--white { background-color: var(--cc-white); }
+
+.container-narrow {
+  width: 100%;
+  max-width: 46rem;
+  margin-inline: auto;
+  padding-inline: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+}
+
+.prose { max-width: 65ch; }
+
+/* Page title (top of inner pages) */
+.site-heading {
+  margin-block: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.05;
+}
+
+.site-heading-upper {
+  display: block;
+  font-size: clamp(1.1rem, 1rem + 0.5vw, 1.4rem);
+  font-weight: 700;
+  color: var(--cc-accent);
+}
+
+.site-heading-lower {
+  display: block;
+  font-size: clamp(2.75rem, 2rem + 4vw, 5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  color: var(--cc-primary);
+}
+
+/* Section title: small lead-in line + large heading */
+.section-heading {
+  margin-bottom: 2rem;
+}
+
+.section-heading-upper {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cc-accent);
+}
+
+.section-heading-lower {
+  display: block;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--cc-primary);
+}
+
+
+/* 4. Buttons
+   --------------------------------------------------------- */
+
+.btn {
+  --bs-btn-font-weight: 700;
+  --bs-btn-border-radius: 999px;
+  --bs-btn-padding-x: 1.5rem;
+  --bs-btn-padding-y: 0.65rem;
+  --bs-btn-focus-box-shadow: 0 0 0 0.2rem rgba(192, 57, 43, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+}
+
+.btn-sm {
+  --bs-btn-padding-x: 1rem;
+  --bs-btn-padding-y: 0.4rem;
+  --bs-btn-font-size: 0.875rem;
+  min-height: 2.25rem;
+}
+
+.btn-lg {
+  --bs-btn-padding-x: 1.75rem;
+  --bs-btn-padding-y: 0.85rem;
+  --bs-btn-font-size: 1.1rem;
+}
+
+.btn-xl {
+  --bs-btn-padding-x: 2rem;
+  --bs-btn-padding-y: 1rem;
+  --bs-btn-font-size: 1.1rem;
+  min-height: 3.5rem;
+}
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--cc-primary);
+  --bs-btn-border-color: var(--cc-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--cc-primary-dark);
+  --bs-btn-hover-border-color: var(--cc-primary-dark);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--cc-primary-dark);
+  --bs-btn-active-border-color: var(--cc-primary-dark);
+  --bs-btn-disabled-bg: var(--cc-primary);
+  --bs-btn-disabled-border-color: var(--cc-primary);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--cc-primary);
+  --bs-btn-border-color: var(--cc-primary);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--cc-primary);
+  --bs-btn-hover-border-color: var(--cc-primary);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--cc-primary-dark);
+  --bs-btn-active-border-color: var(--cc-primary-dark);
+}
+
+/* White button for use on photos and the green footer */
+.btn-light {
+  --bs-btn-color: var(--cc-primary);
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: var(--cc-primary-dark);
+  --bs-btn-hover-bg: var(--cc-blush);
+  --bs-btn-hover-border-color: var(--cc-blush);
+  --bs-btn-active-color: var(--cc-primary-dark);
+  --bs-btn-active-bg: var(--cc-blush);
+  --bs-btn-active-border-color: var(--cc-blush);
+}
+
+
+/* 5. Navbar
+   --------------------------------------------------------- */
+
+.navbar {
+  --bs-navbar-padding-y: 0.75rem;
+  --bs-navbar-color: var(--cc-primary);
+  --bs-navbar-hover-color: var(--cc-accent);
+  --bs-navbar-active-color: var(--cc-primary);
+  --bs-navbar-brand-color: var(--cc-primary);
+  --bs-navbar-brand-hover-color: var(--cc-accent);
+  --bs-navbar-brand-font-size: 1.1rem;
+  --bs-navbar-nav-link-padding-x: 1rem;
+  --bs-navbar-toggler-border-color: var(--cc-line);
+  --bs-navbar-toggler-focus-width: 0.2rem;
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%239E2A2B' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background-color: var(--cc-cream);
+  border-bottom: 1px solid var(--cc-line);
+}
+
+.navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-right: 1rem;
+  padding-block: 0.15rem;
+  line-height: 1;
+}
+
+.brand-mark {
+  flex: none;
+  color: var(--cc-primary);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.brand-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--cc-primary);
+}
+
+.brand-sub {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--cc-text-muted);
+}
+
+.navbar .navbar-brand:hover .brand-name { color: var(--cc-primary-dark); }
+
+.navbar .nav-link {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Current page: underline instead of a colour change alone */
+.navbar .nav-link.active:not(.nav-contact) {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.4rem;
+}
+
+/* "Contact" call-to-action in the nav */
+.navbar .navbar-nav .nav-link.nav-contact,
+.navbar .navbar-nav .nav-link.nav-contact:hover,
+.navbar .navbar-nav .nav-link.nav-contact:focus,
+.navbar .navbar-nav .nav-link.nav-contact.active {
+  color: #fff;
+}
+
+.navbar .navbar-nav .nav-link.nav-contact {
+  padding: 0.6rem 1.25rem;
+  background-color: var(--cc-primary);
+  border-radius: 999px;
+}
+
+.navbar .navbar-nav .nav-link.nav-contact:hover {
+  background-color: var(--cc-primary-dark);
+}
+
+@media (min-width: 992px) {
+  .navbar .navbar-nav .nav-link.nav-contact {
+    margin-left: 0.75rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .navbar .navbar-collapse {
+    padding-top: 1rem;
+  }
+
+  .navbar .navbar-nav .nav-link.nav-contact {
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+}
+
+
+/* 6. Hero + intro
+   --------------------------------------------------------- */
+
+/* Full-width photo with the title on it.
+   Markup:
+   <section class="hero">
+     <img class="hero-media" src="…" alt="…">
+     <div class="container hero-content">
+       <p class="hero-kicker">…</p><h1>…</h1><p class="hero-lead">…</p>
+       <a class="btn btn-light btn-lg">…</a>
+     </div>
+   </section> */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(26rem, 65vh, 42rem);
+  overflow: hidden;
+  background-color: var(--cc-deep); /* shown if the photo fails to load */
+  color: #fff;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Darkens the lower half so white text stays readable on any photo */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(46, 10, 12, 0.85) 0%,
+    rgba(46, 10, 12, 0.4) 50%,
+    rgba(46, 10, 12, 0.1) 100%
+  );
+}
+
+.hero-content {
+  width: 100%;
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.hero h1 {
+  max-width: 20ch;
+  color: #fff;
+}
+
+.hero-kicker {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.hero-lead {
+  max-width: 40rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.hero :focus-visible { outline-color: #fff; }
+
+/* Yellow hero (no photo). Dark text instead of white. */
+.hero--sun {
+  --cc-sun: #e971499a;
+  background-color: var(--cc-sun);
+  color: var(--cc-text);
+}
+
+.hero--sun::after { display: none; } /* the dark photo overlay isn't needed */
+
+.hero--sun h1 { color: var(--cc-primary-dark); }
+
+.hero--sun .hero-kicker,
+.hero--sun .hero-lead { color: var(--cc-text); }
+
+.hero--sun :focus-visible { outline-color: var(--cc-primary-dark); }
+
+/* White card that overlaps the bottom of the hero */
+.intro {
+  position: relative;
+}
+
+.intro-text {
+  padding: clamp(1.5rem, 1rem + 2vw, 3rem);
+  background-color: var(--cc-white);
+  border-radius: var(--cc-radius-lg);
+  box-shadow: var(--cc-shadow);
+}
+
+.intro-text .intro-button {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .intro-text {
+    position: relative;
+    z-index: 2;
+    max-width: 44rem;
+    margin-top: -4rem;
+  }
+}
+
+
+/* 7. Content components
+   --------------------------------------------------------- */
+
+/* Key facts. Wrap each pair in a <div>:
+   <dl class="facts"><div><dt>Location</dt><dd>…</dd></div>…</dl> */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1.5rem 2rem;
+  margin: 0;
+  padding-block: 1.75rem;
+  border-block: 1px solid var(--cc-line);
+}
+
+.facts dt {
+  margin-bottom: 0.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cc-text-muted);
+}
+
+.facts dd {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--cc-primary);
+}
+
+/* Photo beside text. Add .media-split--reverse to flip the sides.
+   <div class="media-split"><img class="media-split-img"><div>…</div></div> */
+.media-split {
+  display: grid;
+  gap: var(--cc-gap);
+  align-items: center;
+}
+
+.media-split-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--cc-radius-lg);
+}
+
+@media (min-width: 992px) {
+  .media-split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .media-split--reverse .media-split-img { order: 2; }
+}
+
+/* Testimonial.
+   <blockquote class="pull-quote"><p>…</p><footer>Name, Role</footer></blockquote> */
+.pull-quote {
+  max-width: 50rem;
+  margin: 0;
+  padding-left: clamp(1.25rem, 3vw, 2rem);
+  border-left: 0.3rem solid var(--cc-brown);
+}
+
+.pull-quote p {
+  font-size: clamp(1.2rem, 1.05rem + 0.7vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--cc-text);
+}
+
+.pull-quote footer,
+.pull-quote figcaption {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cc-brown);
+}
+
+.pull-quote cite { font-style: normal; }
+
+/* Photo grid mixing landscape and portrait shots.
+   <div class="gallery"><figure class="gallery-item gallery-item--tall"><img></figure>… */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  grid-auto-rows: 12rem;
+  grid-auto-flow: dense;
+  gap: 1rem;
+}
+
+.gallery-item {
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--cc-radius);
+  background-color: var(--cc-blush);
+}
+
+.gallery-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item--tall { grid-row: span 2; }
+
+@media (min-width: 768px) {
+  .gallery-item--wide { grid-column: span 2; }
+}
+
+/* Three-up highlights with a coloured icon.
+   <div class="pillars"><div class="pillar pillar--forest">
+     <span class="pillar-icon"><i …></i></span><h3 class="pillar-title">…</h3><p>…</p> */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.pillar { --pillar: var(--cc-primary); }
+/* Modifier names kept from the old palette so About.tsx keeps working */
+.pillar--forest { --pillar: var(--cc-primary); }
+.pillar--amber  { --pillar: var(--cc-amber); }
+.pillar--blue   { --pillar: var(--cc-accent); }
+
+.pillar-icon {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background-color: var(--pillar);
+  color: #fff;
+  font-size: 1.75rem;
+}
+
+.pillar-title {
+  margin-bottom: 0.4rem;
+  font-size: 1.25rem;
+}
+
+.pillar p {
+  margin: 0;
+  color: var(--cc-text-muted);
+}
+
+/* Image + title cards for Programs and Events.
+   <div class="tile-grid"><a class="tile" href><img class="tile-img">
+     <div class="tile-body"><h3 class="tile-title">…</h3><p class="tile-meta">…</p></div></a> */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 2rem var(--cc-gap);
+}
+
+.tile {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tile-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--cc-radius);
+  background-color: var(--cc-blush);
+}
+
+.tile-body { padding-top: 0.9rem; }
+
+.tile-title {
+  margin-bottom: 0.25rem;
+  font-size: 1.2rem;
+}
+
+.tile-meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--cc-text-muted);
+}
+
+a.tile:hover .tile-title {
+  color: var(--cc-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+
+/* 8. Call to action
+   --------------------------------------------------------- */
+
+.cta {
+  padding-block: var(--cc-section-y);
+}
+
+/* Outline (not a pseudo-element) so no parent background can hide it */
+.cta-inner {
+  margin: 1rem;
+  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  background-color: var(--cc-blush);
+  border-radius: var(--cc-radius-lg);
+  outline: 0.2rem solid var(--cc-primary);
+  outline-offset: 0.6rem;
+}
+
+.cta-inner > :last-child { margin-bottom: 0; }
+
+
+/* 9. Forms
+   --------------------------------------------------------- */
+
+.form-label {
+  font-weight: 700;
+  color: var(--cc-text);
+}
+
+.form-control,
+.form-select {
+  padding: 0.7rem 0.9rem;
+  background-color: var(--cc-white);
+  border: 1px solid var(--cc-field-border);
+  border-radius: var(--cc-radius-sm);
+  color: var(--cc-text);
+}
+
+.form-control::placeholder { color: #7A6A64; }
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--cc-primary);
+  box-shadow: 0 0 0 0.2rem rgba(158, 42, 43, 0.25);
+}
+
+textarea.form-control { min-height: 9rem; }
+
+
+/* 10. Hours + address
+   --------------------------------------------------------- */
+
+.list-hours {
+  max-width: 28rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.05rem;
+}
+
+.list-hours-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.6rem;
+  border-bottom: 1px solid var(--cc-line);
+}
+
+.address {
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.address strong {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--cc-primary);
+}
+
+
+/* 11. Footer
+   --------------------------------------------------------- */
+
+.footer {
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  background-color: var(--cc-primary);
+  color: #fff;
+}
+
+.footer a { color: #fff; }
+.footer a:hover { color: var(--cc-blush); }
+.footer :focus-visible { outline-color: #fff; }
+
+.footer h2, .footer h3, .footer h4, .footer h5, .footer h6 {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* 12. Breadcrumb
+   --------------------------------------------------------- */
+
+.breadcrumb {
+  --bs-breadcrumb-divider-color: var(--cc-text-muted);
+  --bs-breadcrumb-item-active-color: var(--cc-text-muted);
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+
+/* Events list
+   --------------------------------------------------------- */
+
+.event-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.event {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1.25rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--cc-line);
+}
+
+.event:first-child { border-top: 1px solid var(--cc-line); }
+
+.event-date {
+  align-self: start;
+  padding: 0.6rem 0.25rem;
+  text-align: center;
+  line-height: 1.1;
+  background-color: var(--cc-white);
+  border-radius: var(--cc-radius);
+}
+
+.event-month {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cc-accent);
+}
+
+.event-day {
+  display: block;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--cc-primary);
+}
+
+.event-title {
+  margin-bottom: 0.25rem;
+  font-size: 1.3rem;
+}
+
+.event-meta {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: var(--cc-text-muted);
+}
+
+
+/* 14. Reduced motion
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
