@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import ScrollToTop from "./components/scrollToTop";
 import Navbar from "./components/navbar";
@@ -6,7 +6,6 @@ import Footer from "./components/footer";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Programs from "./pages/Programs";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import AdminEvents from "./pages/AdminEvents";
@@ -26,8 +25,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/programs" element={<Programs />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/programs" element={<Navigate to="/events" replace />} />
           <Route path="/contact" element={<Contact />} />
 
           {/* Admin: not linked from the public menu. It shows its own sign-in. */}
