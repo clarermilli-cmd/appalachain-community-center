@@ -36,7 +36,7 @@ const hours = [
 
 export default function Contact() {
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [sent, setSent] = useState(false);
+  const [formNotice, setFormNotice] = useState("");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -48,15 +48,10 @@ export default function Contact() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // TODO: send `form` to the backend, for example:
-    // await fetch("/api/contact", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(form),
-    // });
-
-    setSent(true);
-    setForm(emptyForm);
+    // Do not claim delivery until a real message service is configured.
+    setFormNotice(
+      "Your message has not been sent yet because this form is not connected. Please check back soon."
+    );
   };
 
   return (
@@ -75,10 +70,9 @@ export default function Contact() {
             <h2>Send us a message</h2>
             <p>We usually reply within two business days.</p>
 
-            {sent && (
-              <div className="alert alert-success" role="status">
-                Thank you. Your message has been sent, and we'll be in touch
-                soon.
+            {formNotice && (
+              <div className="alert alert-warning" role="alert">
+                {formNotice}
               </div>
             )}
 
@@ -181,16 +175,10 @@ export default function Contact() {
           {/* Visit info */}
           <div className="col-lg-5">
             <h2>Visit us</h2>
-            <address className="address mb-4">
-              <strong>Appalachian Community Center</strong>
-              520 W Main St.
-              <br />
-              Appalachia, VA 24216
-              <br />
-              <a href="tel:+2762753594">(276) 275-3594</a>
-              <br />
-              <a href="mailto:hello@example.org">hello@example.org</a>
-            </address>
+            <p className="mb-4">
+              Verified address, phone number, and email details are being
+              updated. Please check back soon.
+            </p>
 
             <h2 className="h4">Hours</h2>
             <ul className="list-hours">

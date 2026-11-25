@@ -27,15 +27,9 @@ export default function Footer() {
 
           <div className="col-6 col-md-4">
             <h2>Visit</h2>
-            <address className="mb-0">
-              520 W Main St.
-              <br />
-              Appalachia, VA 24216
-              <br />
-              <a href="tel:+2762753594">(276) 275-3594</a>
-              <br />
-              <a href="mailto:hello@example.org">hello@example.org</a>
-            </address>
+            <p className="mb-0">
+              Verified address and contact details are being updated.
+            </p>
           </div>
         </div>
 
