@@ -1,14 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import ScrollToTop from "./components/ScrollToTop";
 import Navbar from "./components/navbar";
 import Footer from "./components/footer";
-import ScrollToTop from "./components/scrollToTop";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Programs from "./pages/Programs";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
+import AdminEvents from "./pages/AdminEvents";
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
           <Route path="/programs" element={<Programs />} />
           <Route path="/events" element={<Events />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Admin: not linked from the public menu. It shows its own sign-in. */}
+          <Route path="/admin" element={<AdminEvents />} />
         </Routes>
       </main>
 

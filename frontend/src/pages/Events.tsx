@@ -1,66 +1,31 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// TODO: sample events. Replace with real ones (or load them from the backend later).
-// Dates are ISO (YYYY-MM-DD). Past events are hidden automatically.
-
-type CenterEvent = {
-  id: string;
-  date: string;
-  time: string;
-  title: string;
-  location: string;
-  description: string;
-};
-
-const events: CenterEvent[] = [
-  {
-    id: "harvest-supper",
-    date: "2026-10-24",
-    time: "5:00 to 8:00 pm",
-    title: "Harvest supper",
-    location: "Main hall",
-    description:
-      "A community meal with soup, cornbread and desserts. Bring a dish to share if you can.",
-  },
-  {
-    id: "resume-clinic",
-    date: "2026-11-07",
-    time: "10:00 am to 12:00 pm",
-    title: "Resume and job search clinic",
-    location: "Computer room",
-    description:
-      "Volunteers help you update your resume and apply for jobs online. Walk-ins welcome.",
-  },
-  {
-    id: "family-game-night",
-    date: "2026-11-14",
-    time: "5:00 to 8:00 pm",
-    title: "Family game night",
-    location: "Main hall",
-    description:
-      "Board games, snacks and a big open floor for kids. All ages welcome.",
-  },
-  {
-    id: "holiday-market",
-    date: "2026-12-05",
-    time: "10:00 am to 3:00 pm",
-    title: "Holiday makers' market",
-    location: "Main hall and lawn",
-    description:
-      "Handmade gifts from local artists and growers. Table sign-ups are open now.",
-  },
-];
+import { getEvents, todayISO } from "../services/api";
+import type { CenterEvent } from "../services/api";
 
 // Parse as local time so the date doesn't shift by a day in US time zones
 const toDate = (iso: string) => new Date(`${iso}T00:00:00`);
 
 export default function Events() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const [events, setEvents] = useState<CenterEvent[] | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  const upcoming = events
-    .filter((e) => toDate(e.date) >= today)
-    .sort((a, b) => toDate(a.date).getTime() - toDate(b.date).getTime());
+  useEffect(() => {
+    let cancelled = false;
+
+    // Only events from today onward, soonest first
+    getEvents({ from: todayISO() })
+      .then((data) => {
+        if (!cancelled) setEvents(data);
+      })
+      .catch(() => {
+        if (!cancelled) setFailed(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
@@ -72,9 +37,17 @@ export default function Events() {
       </header>
 
       <section className="container pb-5">
-        {upcoming.length > 0 ? (
+        {failed && (
+          <p className="lead">
+            We couldn't load events right now. Please try again in a moment.
+          </p>
+        )}
+
+        {!failed && events === null && <p>Loading events&hellip;</p>}
+
+        {events && events.length > 0 && (
           <ul className="event-list">
-            {upcoming.map((e) => {
+            {events.map((e) => {
               const d = toDate(e.date);
               return (
                 <li key={e.id} className="event">
@@ -88,16 +61,27 @@ export default function Events() {
                   <div>
                     <h2 className="event-title">{e.title}</h2>
                     <p className="event-meta">
-                      {d.toLocaleDateString("en-US", { weekday: "long" })},{" "}
-                      {e.time} &middot; {e.location}
+                      {d.toLocaleDateString("en-US", { weekday: "long" })}
+                      {e.time && `, ${e.time}`}
+                      {e.location && ` · ${e.location}`}
                     </p>
-                    <p className="mb-0">{e.description}</p>
+                    {e.description && <p className="mb-0">{e.description}</p>}
+                    {e.imageUrl && (
+                      <img
+                        className="event-img"
+                        src={e.imageUrl}
+                        alt=""
+                        loading="lazy"
+                      />
+                    )}
                   </div>
                 </li>
               );
             })}
           </ul>
-        ) : (
+        )}
+
+        {events && events.length === 0 && (
           <p className="lead">
             No events are scheduled right now. Check back soon, or get in
             touch to hear about what's planned.

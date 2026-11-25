@@ -866,3 +866,40 @@ textarea.form-control { min-height: 9rem; }
     animation-duration: 0.01ms !important;
   }
 }
+
+/* Event photos + admin */
+.event-img {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  aspect-ratio: 3 / 2;
+  margin-top: 0.75rem;
+  object-fit: cover;
+  background-color: var(--cc-blush);
+  border-radius: var(--cc-radius);
+}
+
+.admin-event {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--cc-line);
+}
+
+.admin-event:first-child { border-top: 1px solid var(--cc-line); }
+.admin-event-body { flex: 1; min-width: 0; }
+.admin-event-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.admin-thumb {
+  flex: none;
+  width: 5rem;
+  height: 3.75rem;
+  object-fit: cover;
+  border-radius: var(--cc-radius-sm);
+}
+
+@media (max-width: 575.98px) {
+  .admin-event { flex-wrap: wrap; }
+  .admin-event-actions { width: 100%; }
+}
