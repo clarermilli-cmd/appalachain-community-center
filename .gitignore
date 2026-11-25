@@ -1,0 +1,12 @@
+
+# Dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+
+# Local environment and generated files
+.env
+.env.*
+!.env.example
+amplify_outputs.json
