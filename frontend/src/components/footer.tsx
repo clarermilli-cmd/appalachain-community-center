@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-//Keep in sync with Contact.tsx.
+// Keep in sync with Contact.tsx.
 
 export default function Footer() {
   return (
@@ -19,7 +19,6 @@ export default function Footer() {
             <h2>Explore</h2>
             <ul className="list-unstyled mb-0">
               <li className="mb-2"><Link to="/about">About</Link></li>
-              <li className="mb-2"><Link to="/programs">Programs</Link></li>
               <li className="mb-2"><Link to="/events">Events</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
