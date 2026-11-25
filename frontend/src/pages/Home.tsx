@@ -1,14 +1,9 @@
 import { Link } from "react-router-dom";
 
-// To add a hero photo: import it, then uncomment the <img> in the hero.
-// import heroImage from "../assets/hero.jpg";
-
 export default function Home() {
   return (
     <>
-      {/* Hero */}
       <section className="hero hero--sun">
-        {/* <img className="hero-media" src={heroImage} alt="Neighbors gathered at the community center" /> */}
         <div className="container hero-content">
           <p className="hero-kicker">Serving our Appalachian community</p>
           <h1>Together we grow</h1>
@@ -18,8 +13,8 @@ export default function Home() {
             throughout our community.
           </p>
           <div className="d-flex flex-wrap gap-3">
-            <Link to="/programs" className="btn btn-light btn-lg">
-              Explore our programs
+            <Link to="/about" className="btn btn-light btn-lg">
+              Learn about us
             </Link>
             <Link to="/events" className="btn btn-light btn-lg">
               See upcoming events
@@ -27,9 +22,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
 
-      {/* Mission + key facts */}
       <section className="page-section">
         <div className="container">
           <h2 className="section-heading">
@@ -45,15 +38,10 @@ export default function Home() {
             another, and discover opportunities to grow and thrive.
           </p>
 
-          {/* TODO: placeholder facts */}
           <dl className="facts mt-4">
             <div>
               <dt>Who we serve</dt>
               <dd>All ages</dd>
-            </div>
-            <div>
-              <dt>Programs</dt>
-              <dd>20+ every month</dd>
             </div>
             <div>
               <dt>Cost</dt>
@@ -67,28 +55,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Where to go next. Swap each placeholder div for an <img className="tile-img"> */}
       <section className="page-section page-section--tint">
         <div className="container">
           <h2 className="mb-4">Find your place</h2>
 
           <div className="tile-grid">
-            <Link to="/programs" className="tile">
-              <div className="tile-img" role="img" aria-label="Programs" />
-              <div className="tile-body">
-                <h3 className="tile-title">Programs</h3>
-                <p className="tile-meta">
-                  Classes, tutoring, meals and more for every age.
-                </p>
-              </div>
-            </Link>
-
             <Link to="/events" className="tile">
               <div className="tile-img" role="img" aria-label="Events" />
               <div className="tile-body">
                 <h3 className="tile-title">Events</h3>
                 <p className="tile-meta">
-                  Suppers, workshops and markets open to everyone.
+                  Workshops and gatherings open to the community.
                 </p>
               </div>
             </Link>
@@ -98,7 +75,17 @@ export default function Home() {
               <div className="tile-body">
                 <h3 className="tile-title">About us</h3>
                 <p className="tile-meta">
-                  Learn how the center started and what we care about.
+                  Learn about the center and what we care about.
+                </p>
+              </div>
+            </Link>
+
+            <Link to="/contact" className="tile">
+              <div className="tile-img" role="img" aria-label="Contact us" />
+              <div className="tile-body">
+                <h3 className="tile-title">Get in touch</h3>
+                <p className="tile-meta">
+                  Ask a question, share an idea, or find out how to connect.
                 </p>
               </div>
             </Link>
@@ -106,7 +93,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to action */}
       <section className="cta">
         <div className="container">
           <div className="cta-inner text-center">
